@@ -15,7 +15,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.adilsonkina.imagePicker"
     },
     "web": {
       "bundler": "metro",
@@ -36,12 +40,20 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Please allow the app to access your images"
+          "photosPermission": "Please Grant Image Access Permission"
         }
       ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "5b0bea7a-ec3d-41d8-828e-4a48af3d66c2"
+      }
     }
   }
 }
