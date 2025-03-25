@@ -1,8 +1,10 @@
 import { Text, View, StyleSheet, Button, Pressable} from "react-native";
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import * as MediaLibrary from 'expo-media-library';
 import { Link } from 'expo-router';
 import { type ImageSource } from 'expo-image';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { captureRef } from 'react-native-view-shot';
 
 import * as ImagePicker from 'expo-image-picker';
 import ImageViewer from '@/components/ImageViewer';
@@ -13,10 +15,16 @@ import EmojiList from '@/components/EmojiList';
 import EmojiSticker from '@/components/EmojiSticker';
 
 export default function Index() {
+  const imageRef = useRef<View>(null);
+  const [status, requestPermission] = MediaLibrary.usePermissions();
   const [image, setImage] = useState(null);
   const [shownAppOptions, setShownAppOptions] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [pickedEmoji, setPickedEmoji] = useState(undefined);
+
+  if(status==null){
+    requestPermission();
+  }
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -46,6 +54,21 @@ export default function Index() {
   const onModelClose = () => {
     setIsModalVisible(false);
   }
+  const saveImage = async () => {
+    try {
+      const localUri = await captureRef(imageRef, {
+        height: 440,
+        quality: 1,
+      });
+
+      await MediaLibrary.saveToLibraryAsync(localUri);
+      if (localUri) {
+        alert('Saved!');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     /*Things here were made lazyly, ill change later(I hope)*/
@@ -54,8 +77,10 @@ export default function Index() {
         {shownAppOptions ? (
           <>
             <View>
-              <ImageViewer imgSource={image} />
-              {pickedEmoji && <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />}
+              <View ref={imageRef} collapsable={false}>
+                <ImageViewer imgSource={image} />
+                {pickedEmoji && <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />}
+              </View>
             </View>
             <View style={styles.buttonContainer}>
               {/* Refresh */}
@@ -67,7 +92,7 @@ export default function Index() {
                 <MaterialIcons name="add" size={38} color="#24273a" />
               </Pressable>
               {/*Save alt*/}
-              <Pressable onPress={pickImage} style={styles.button}>
+              <Pressable onPress={saveImage} style={styles.button}>
                 <MaterialIcons name="save-alt" size={38} color="#24273a" />
               </Pressable>
             </View>
