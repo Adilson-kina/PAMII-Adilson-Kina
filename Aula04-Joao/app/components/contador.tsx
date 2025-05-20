@@ -24,7 +24,7 @@ export default class Contador extends React.Component{
         <View style={styles.texto}>
           <Text>{this.state.contador}</Text>
         </View>
-        <View style={style.botoes}>
+        <View style={styles.botoes}>
         <Button
           style={styles.botao1}
           title="Aumenta"
