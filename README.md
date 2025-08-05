@@ -1,6 +1,6 @@
 # PAMII Camargo Aranha
 
-[Leiame em português](./LEIAME.md)
+[README em português](./LEIAME.md)
 Repository for the PAMII classes of João Siles and Najara Gabriella.
 
 ## Requirements

@@ -1,6 +1,6 @@
 # PAMII Camargo Aranha
 
-[English Readme](./README.md)
+[README in english](./README.md) <br>
 Repositório referente as aulas de PAMII do João Siles e Najara Gabriella 
 
 ## Requisitos
